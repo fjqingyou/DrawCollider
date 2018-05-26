@@ -100,20 +100,28 @@ namespace QY.Debug{
 
             Vector3 scale = transform.lossyScale;
 
-            float circleSacleValue = Mathf.Max(scale.x, scale.z);
+            float absX = Mathf.Abs(scale.x);
+            float absZ = Mathf.Abs(scale.z);
+            float scalSign = Mathf.Sign(scale.x - scale.z);
 
-            radius *= circleSacleValue;
+            float circleSacleValue = Mathf.Max(absX, absZ) * scalSign;
 
-            float circleOffsetY = height / 2f  * scale.y - radius;//;
+            radius *= Mathf.Abs(circleSacleValue);
+
+            float circleOffsetY = height / 2f  * Mathf.Abs(scale.y) - radius;//;
 
             Vector3 center = position + centerOffset;
 
-            Vector3 posUp = center + Vector3.up * circleOffsetY;
-            Vector3 posDown = center + Vector3.down * circleOffsetY;
+            Vector3 posUp;
+            Vector3 posDown;
 
             if(circleOffsetY < 0f){
+                posUp = center;
+                posDown = center;
                 DrawCircle(center, Vector3.up, radius );
             }else{
+                posUp = center + Vector3.up * circleOffsetY;
+                posDown = center + Vector3.down * circleOffsetY;
                 //top circle
                 DrawCircle(posUp, Vector3.up, radius );
 
@@ -189,7 +197,7 @@ namespace QY.Debug{
             if (thetaValue < 0.0001f){
                 thetaValue = 0.0001f;
             }
-
+            
             Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, direction);
 
             Vector3 firstPoint = Vector3.zero;
