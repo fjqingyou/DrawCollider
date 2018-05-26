@@ -6,7 +6,10 @@ namespace QY.Debug{
             MeshCollider meshCollider = targetCollider;
             Mesh mesh = meshCollider.sharedMesh;
             if(mesh != null){
-                Vector3 position = meshCollider.transform.position;
+                Transform transform = meshCollider.transform;
+                Vector3 position = transform.position;
+                Vector3 scale = transform.lossyScale;
+
                 Vector3 [] vertices = mesh.vertices;
                 int [] triangles = mesh.triangles;
                 for(int i = 0; i < triangles.Length; i += 3){
@@ -21,7 +24,13 @@ namespace QY.Debug{
                             index2 = triangles[i];
                         }
 
-                        Gizmos.DrawLine(position + vertices[index1], position + vertices[index2]);
+                        Vector3 vector1 = vertices[index1];
+                        Vector3 vector2 = vertices[index2];
+
+                        vector1.Scale(scale);
+                        vector2.Scale(scale);
+
+                        Gizmos.DrawLine(position + vector1, position +  vector2);
                     }
                 }
             }

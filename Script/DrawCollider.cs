@@ -1,19 +1,41 @@
 using UnityEngine;
+using UnityEngine.Serialization;
+
 #if UNITY_EDITOR
 using UnityEditor;            
 #endif
 
 namespace QY.Debug{
+    /// <summary>
+    /// Draw Collider base Class 
+    /// </summary>
     public class DrawCollider : MonoBehaviour {
         [SerializeField]
-        private bool m_onlyRuningNotPlaying;
-        protected bool onlyRuningNotPlaying{get{return m_onlyRuningNotPlaying;} set { m_onlyRuningNotPlaying = value;}}
+        [FormerlySerializedAs("m_onlyRuningNotPlaying")]//Compatible with the old version
+        private bool m_onlyNotPlaying;
+
+        /// <summary>
+        /// get or set only Not Playing status
+        /// if true playing mode not draw wire frame
+        /// </summary>
+        /// <returns></returns>
+        protected bool onlyNotPlaying{get{return m_onlyNotPlaying;} set { m_onlyNotPlaying = value;}}
 
         [SerializeField]
         private Color m_color = new Color(127 / 255f, 201 / 255f, 122 / 255f);
+
+        /// <summary>
+        /// get or set Collider wire frame Color
+        /// </summary>
+        /// <returns></returns>
         protected Color color{get{ return m_color;} set { m_color = value;}}
 
 
+        /// <summary>
+        /// get scene view camera component
+        /// <para>if this view not exists or runing not editor mode, return null</para>
+        /// </summary>
+        /// <returns></returns>
         protected Camera sceneViewCamera{
             get{
                 Camera camera = null;
@@ -28,8 +50,11 @@ namespace QY.Debug{
         }
 
         
+        /// <summary>
+        /// Unity OnDrawGizmos
+        /// </summary>
         protected void OnDrawGizmos() {
-            if(m_onlyRuningNotPlaying){
+            if(m_onlyNotPlaying){
                 if(Application.isPlaying){
                     return;
                 }
@@ -42,15 +67,28 @@ namespace QY.Debug{
             }
         }
 
+        /// <summary>
+        /// Draw event
+        /// </summary>
         protected virtual void OnDraw(){
             OnDrawCollider();
         }
 
+        /// <summary>
+        /// Draw Collider in this method body
+        /// </summary>
         protected virtual void OnDrawCollider(){
 
         }
 
 
+        /// <summary>
+        /// Draw Capsule wire frame
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="centerOffset"></param>
+        /// <param name="radius"></param>
+        /// <param name="height"></param>
         protected void DrawCapsule(Transform transform, Vector3 centerOffset, float radius, float height){
             //up direction
             Vector3 up = transform.up;
@@ -60,7 +98,13 @@ namespace QY.Debug{
             //get characterController component pos
             Vector3 position = transform.position;
 
-            float circleOffsetY = height / 2f - radius;
+            Vector3 scale = transform.lossyScale;
+
+            float circleSacleValue = Mathf.Max(scale.x, scale.z);
+
+            radius *= circleSacleValue;
+
+            float circleOffsetY = height / 2f  * scale.y - radius;//;
 
             Vector3 center = position + centerOffset;
 
@@ -95,16 +139,54 @@ namespace QY.Debug{
             DrawCircle(Mathf.PI, 2 * Mathf.PI, false, posDown , Vector3.right, radius);
         }
 
-        
-        protected void DrawCircle(Vector3 pos, Vector3 direction, float radius, float thetaValue = 0.01f){
-            DrawCircle(0, 2 * Mathf.PI, true, pos, direction, radius, thetaValue);
-        }
-        
-        protected void DrawCircleHalf(Vector3 pos, Vector3 direction, float radius, float thetaValue = 0.01f){
-            DrawCircle(0, Mathf.PI, false, pos, direction, radius, thetaValue);
+        /// <summary>
+        /// Draw half circle
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <param name="direction"></param>
+        /// <param name="radius"></param>
+        protected void DrawCircleHalf(Vector3 pos, Vector3 direction, float radius){
+            DrawCircle(0, Mathf.PI, false, pos, direction, radius);
         }
 
-        protected void DrawCircle(float thetaStart, float thetaEnd, bool linkStartAndEnd, Vector3 pos, Vector3 direction, float radius, float thetaValue = 0.01f){
+
+        /// <summary>
+        /// Draw circle
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <param name="direction"></param>
+        /// <param name="radius"></param>
+        protected void DrawCircle(Vector3 pos, Vector3 direction, float radius){
+            DrawCircle(0, 2 * Mathf.PI, true, pos, direction, radius);
+        }
+        
+        /// <summary>
+        /// Draw circle
+        /// </summary>
+        /// <param name="thetaStart"></param>
+        /// <param name="thetaEnd"></param>
+        /// <param name="linkStartAndEnd"></param>
+        /// <param name="pos"></param>
+        /// <param name="direction"></param>
+        /// <param name="radius"></param>
+        protected void DrawCircle(float thetaStart, float thetaEnd, bool linkStartAndEnd, Vector3 pos, Vector3 direction, float radius){
+            float perimeter = 2 * Mathf.PI * radius;
+            float pixelPerimeter = perimeter / 100f;
+
+            DrawCircle(thetaStart, thetaEnd, linkStartAndEnd, pos, direction, radius, pixelPerimeter);
+        }
+
+        /// <summary>
+        /// Dircle circle implement
+        /// </summary>
+        /// <param name="thetaStart"></param>
+        /// <param name="thetaEnd"></param>
+        /// <param name="linkStartAndEnd"></param>
+        /// <param name="pos"></param>
+        /// <param name="direction"></param>
+        /// <param name="radius"></param>
+        /// <param name="thetaValue"></param>
+        private void DrawCircle(float thetaStart, float thetaEnd, bool linkStartAndEnd, Vector3 pos, Vector3 direction, float radius, float thetaValue){
             if (thetaValue < 0.0001f){
                 thetaValue = 0.0001f;
             }

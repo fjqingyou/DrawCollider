@@ -1,7 +1,6 @@
 using UnityEngine;
 
 namespace QY.Debug{
-    
     [AddComponentMenu("DrawCollider/DrawBoxCollider")]
     public class DrawBoxCollider : DrawColliderGeneric<BoxCollider> {
         protected override void OnDrawCollider(){
@@ -10,9 +9,11 @@ namespace QY.Debug{
             Vector3 colliderSize = targetCollider.size;
             Vector3 colliderSizeHalf = colliderSize / 2f;
 
-            Vector3 upOffset = Vector3.up * colliderSizeHalf.y;
-            Vector3 rightOffset = Vector3.left * colliderSizeHalf.x;
-            Vector3 forwardOffset = Vector3.forward * colliderSizeHalf.z;
+            Vector3 sacle = transform.lossyScale;
+
+            Vector3 upOffset = Vector3.up * colliderSizeHalf.y * sacle.y;
+            Vector3 rightOffset = Vector3.left * colliderSizeHalf.x * sacle.x;
+            Vector3 forwardOffset = Vector3.forward * colliderSizeHalf.z * sacle.z;
 
             Vector3 center = position + colliderCenter;
             Vector3 bottomCenter = center + -upOffset;
@@ -29,11 +30,11 @@ namespace QY.Debug{
             Gizmos.DrawLine(bottomLeftForward, bottomLeftBack);
 
             
-            Vector3 dd = Vector3.up * colliderSize.y;;
-            Vector3 topLeftBack = bottomLeftBack + dd;
-            Vector3 topRightback = bottomRightback + dd;
-            Vector3 topLeftForward = bottomLeftForward + dd;
-            Vector3 topRightForward = bottomRightForward + dd;
+            Vector3 height = Vector3.up * colliderSize.y * sacle.y;
+            Vector3 topLeftBack = bottomLeftBack + height;
+            Vector3 topRightback = bottomRightback + height;
+            Vector3 topLeftForward = bottomLeftForward + height;
+            Vector3 topRightForward = bottomRightForward + height;
             
             Gizmos.DrawLine(topLeftBack, topRightback);
             Gizmos.DrawLine(topRightback, topRightForward);
