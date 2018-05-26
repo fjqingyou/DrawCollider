@@ -1,6 +1,6 @@
 using UnityEngine;
 namespace QY.Debug{
-    [AddComponentMenu("DrawCollider/DrawMeshCollider")]
+    [AddComponentMenu("Draw Collider/Draw Mesh Collider")]
     public class DrawMeshCollider : DrawColliderGeneric<MeshCollider> {
         protected override void OnDrawCollider(){
             MeshCollider meshCollider = targetCollider;

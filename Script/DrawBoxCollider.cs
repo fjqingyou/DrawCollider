@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace QY.Debug{
-    [AddComponentMenu("DrawCollider/DrawBoxCollider")]
+    [AddComponentMenu("Draw Collider/Draw Box Collider")]
     public class DrawBoxCollider : DrawColliderGeneric<BoxCollider> {
         protected override void OnDrawCollider(){
             Vector3 position = targetCollider.transform.position;

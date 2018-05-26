@@ -9,7 +9,7 @@ namespace QY.Debug{
     /// <summary>
     /// Draw Collider base Class 
     /// </summary>
-    public class DrawCollider : MonoBehaviour {
+    public abstract class DrawCollider : MonoBehaviour {
         [SerializeField]
         [FormerlySerializedAs("m_onlyRuningNotPlaying")]//Compatible with the old version
         private bool m_onlyNotPlaying;

@@ -1,6 +1,6 @@
 using UnityEngine;
 namespace QY.Debug{
-    public class DrawColliderGeneric<T>  : DrawCollider where T : Collider {
+    public abstract class DrawColliderGeneric<T>  : DrawCollider where T : Collider {
         [SerializeField]
         private T m_targetCollider;
 

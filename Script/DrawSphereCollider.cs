@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 namespace QY.Debug{
-    [AddComponentMenu("DrawCollider/DrawSphereCollider")]
+    [AddComponentMenu("Draw Collider/Draw Sphere Collider")]
     public class DrawSphereCollider : DrawColliderGeneric<SphereCollider> {
         protected override void OnDrawCollider(){
             Transform transform = targetCollider.transform;
