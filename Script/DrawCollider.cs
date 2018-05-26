@@ -170,10 +170,9 @@ namespace QY.Debug{
         /// <param name="direction"></param>
         /// <param name="radius"></param>
         protected void DrawCircle(float thetaStart, float thetaEnd, bool linkStartAndEnd, Vector3 pos, Vector3 direction, float radius){
-            float perimeter = 2 * Mathf.PI * radius;
-            float pixelPerimeter = perimeter / 100f;
+            float thetaValue = 2 * Mathf.PI / radius / 100f;
 
-            DrawCircle(thetaStart, thetaEnd, linkStartAndEnd, pos, direction, radius, pixelPerimeter);
+            DrawCircle(thetaStart, thetaEnd, linkStartAndEnd, pos, direction, radius, thetaValue);
         }
 
         /// <summary>
