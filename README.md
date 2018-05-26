@@ -17,9 +17,12 @@ this collider wire frame don't disappear.
 the end for Example
 
 
-Support Collider
-    Box Collider
-    Mesh Collider
-    Sphere Collider
-    Capsule Collider
-    Character Controller
+Support Collider:
+    Box Collider,
+    Mesh Collider,
+    Sphere Collider,
+    Capsule Collider,
+    Character Controller,
+
+
+The End.
